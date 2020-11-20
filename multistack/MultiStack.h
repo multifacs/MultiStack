@@ -5,14 +5,14 @@ template<class T>
 class MultiStack
 {
 private:
-	T* x;
+	T* x; // мультистек построен на одномерном массиве
 	short size;
 	short* heads;
 	short* tails;
 	unsigned int* sizes;
 	unsigned short StackCount;
 
-	bool comp(short* a, short* b)
+	bool comp(short* a, short* b) // функци€ сравнени€ двух массивов типа short, нужна дл€ определени€, закончено ли перераспределение
 	{
 		for (int i = 0; i < StackCount; i++)
 			if (a[i] != b[i])
@@ -20,7 +20,7 @@ private:
 		return 1;
 	}
 
-	unsigned short get_free_cells()
+	unsigned short get_free_cells() // функци€ получени€ количества свободных €чеек в массиве
 	{
 		unsigned short free_cells = 0;
 		for (int i = 0; i < StackCount; i++)
@@ -28,7 +28,7 @@ private:
 		return free_cells;
 	}
 
-	void reallocate(unsigned short free_cells, int n)
+	void reallocate(unsigned short free_cells, int n) // функци€ перераспределени€
 	{
 		unsigned short for_each = free_cells / StackCount;
 		unsigned short extra = free_cells - for_each * StackCount;
@@ -108,6 +108,8 @@ public:
 	{
 		if (_size / _count <= 0)
 			throw logic_error("incorrect mem size");
+		if (_size <= 0 || _count <= 0)
+			throw logic_error("incorrect input");
 
 		size = _size;
 		StackCount = _count;
@@ -146,9 +148,9 @@ public:
 		sizes = new unsigned int[StackCount];
 		for (int i = 0; i < StackCount; i++)
 		{
-			heads = copy.heads[i];
-			tails = copy.tails[i];
-			sizes = copy.sizes[i];
+			heads[i] = copy.heads[i];
+			tails[i] = copy.tails[i];
+			sizes[i] = copy.sizes[i];
 		}
 	}
 
@@ -182,7 +184,10 @@ public:
 	}
 	bool IsEmpty(int n)
 	{
-		return !IsFull(n);
+		if (tails[n] == heads[n])
+			return 1;
+		else
+			return 0;
 	}
 
 	int get_size(int n)

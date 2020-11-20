@@ -16,5 +16,7 @@ int main()
 	a.push(0, 66);
 	a.push(0, 9);
 	
+	a.push(1, 10);
+
 	cout << a;
 }
