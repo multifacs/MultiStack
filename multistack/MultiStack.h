@@ -28,6 +28,33 @@ private:
 		return free_cells;
 	}
 
+	void calc_news(short* new_heads, short* new_tails, unsigned int* new_sizes, unsigned short for_each, unsigned short extra, int n)
+	{
+		if (n == 0)
+			new_sizes[0] = sizes[0] - (sizes[0] - tails[0] + heads[0]) + for_each + extra;
+		else
+			new_sizes[0] = sizes[0] - (sizes[0] - tails[0] + heads[0]) + for_each;
+		new_heads[0] = 0;
+		new_tails[0] = tails[0];
+
+		for (int i = 1; i < StackCount; i++)
+		{
+			if (i == n)
+				new_sizes[i] = sizes[i] - (sizes[i] - tails[i] + heads[i]) + for_each + extra;
+
+			else
+				new_sizes[i] = sizes[i] - (sizes[i] - tails[i] + heads[i]) + for_each;
+
+			new_heads[i] = new_heads[i - 1] + new_sizes[i - 1];
+			new_tails[i] = new_heads[i] + (tails[i] - heads[i]);
+		}
+	}
+
+	bool can_realloc(short* heads, short* tails, short* new_heads, short* new_tails, unsigned short counter)
+	{
+		return (((new_heads[counter] >= tails[counter - 1]) && (new_tails[counter] <= heads[counter + 1]) || (new_heads[counter] >= tails[counter - 1]) && (counter == StackCount - 1)) && (counter != 0));
+	}
+
 	void reallocate(unsigned short free_cells, int n) // функция перераспределения
 	{
 		unsigned short for_each = free_cells / StackCount;
@@ -42,24 +69,7 @@ private:
 		unsigned int* new_sizes;
 		new_sizes = new unsigned int[StackCount];
 
-		if (n == 0)
-			new_sizes[0] = sizes[0] - (sizes[0] - tails[0] + heads[0]) + for_each + extra;
-		else
-			new_sizes[0] = sizes[0] - (sizes[0] - tails[0] + heads[0]) + for_each;
-		new_heads[0] = 0;
-		new_tails[0] = tails[0];
-		
-		for (int i = 1; i < StackCount; i++)
-		{
-			if (i == n)
-				new_sizes[i] = sizes[i] - (sizes[i] - tails[i] + heads[i]) + for_each + extra;
-
-			else
-				new_sizes[i] = sizes[i] - (sizes[i] - tails[i] + heads[i]) + for_each;
-
-			new_heads[i] = new_heads[i - 1] + new_sizes[i - 1];
-			new_tails[i] = new_heads[i] + (tails[i] - heads[i]);
-		}
+		calc_news(new_heads, new_tails, new_sizes, for_each, extra, n);
 
 		sizes[0] = new_sizes[0];
 
@@ -67,7 +77,7 @@ private:
 
 		while (!comp(heads, new_heads))
 		{
-			if (((new_heads[counter] >= tails[counter - 1]) && (new_tails[counter] <= heads[counter + 1]) || (new_heads[counter] >= tails[counter - 1]) && (counter == StackCount - 1)) && (counter != 0))
+			if (can_realloc(heads, tails, new_heads, new_tails, counter))
 			{
 				unsigned short elems = tails[counter] - heads[counter];
 				short diff = new_heads[counter] - heads[counter];
