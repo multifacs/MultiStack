@@ -228,4 +228,43 @@ public:
 
 		return ostr;
 	}
+
+	//extra
+
+	int max_amount()
+	{
+		if (size == 0)
+			throw logic_error("multistack empty");
+
+		int result = 0;
+
+		for (int i = 0; i < StackCount; i++)
+			if (sizes[i] > sizes[result])
+				result = i;
+
+		return result;
+	}
+
+	int max_elem()
+	{
+		if (size == 0)
+			throw logic_error("multistack empty");
+
+		int result = 0;
+		int temp = x[0];
+		int counter = 0;
+
+		for (int i = 0; i < StackCount; i++)
+			for (int j = 0; j < sizes[i]; j++)
+			{
+				if (x[counter] > temp)
+				{
+					result = i;
+					temp = x[counter];
+				}
+				counter++;
+			}
+
+		return result;
+	}
 };

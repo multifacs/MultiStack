@@ -18,5 +18,11 @@ int main()
 	
 	a.push(1, 10);
 
-	cout << a;
+	cout << a << endl;
+
+	cout << a.max_amount() << endl;
+	cout << a.max_elem() << endl;
+	a.pop(2);
+	a.push(2, 100);
+	cout << a.max_elem() << endl;
 }
