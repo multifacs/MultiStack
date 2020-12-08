@@ -1,18 +1,18 @@
-#include <iostream>
+п»ї#include <iostream>
 using namespace std;
 
 template<class T>
 class MultiStack
 {
 private:
-	T* x; // мультистек построен на одномерном массиве
+	T* x; // РјСѓР»СЊС‚РёСЃС‚РµРє РїРѕСЃС‚СЂРѕРµРЅ РЅР° РѕРґРЅРѕРјРµСЂРЅРѕРј РјР°СЃСЃРёРІРµ
 	short size;
 	short* heads;
 	short* tails;
 	unsigned int* sizes;
 	unsigned short StackCount;
 
-	bool comp(short* a, short* b) // функция сравнения двух массивов типа short, нужна для определения, закончено ли перераспределение
+	bool comp(short* a, short* b) // С„СѓРЅРєС†РёСЏ СЃСЂР°РІРЅРµРЅРёСЏ РґРІСѓС… РјР°СЃСЃРёРІРѕРІ С‚РёРїР° short, РЅСѓР¶РЅР° РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРёСЏ, Р·Р°РєРѕРЅС‡РµРЅРѕ Р»Рё РїРµСЂРµСЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ
 	{
 		for (int i = 0; i < StackCount; i++)
 			if (a[i] != b[i])
@@ -20,7 +20,7 @@ private:
 		return 1;
 	}
 
-	unsigned short get_free_cells() // функция получения количества свободных ячеек в массиве
+	unsigned short get_free_cells() // С„СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ РєРѕР»РёС‡РµСЃС‚РІР° СЃРІРѕР±РѕРґРЅС‹С… СЏС‡РµРµРє РІ РјР°СЃСЃРёРІРµ
 	{
 		unsigned short free_cells = 0;
 		for (int i = 0; i < StackCount; i++)
@@ -55,7 +55,7 @@ private:
 		return (((new_heads[counter] >= tails[counter - 1]) && (new_tails[counter] <= heads[counter + 1]) || (new_heads[counter] >= tails[counter - 1]) && (counter == StackCount - 1)) && (counter != 0));
 	}
 
-	void reallocate(unsigned short free_cells, int n) // функция перераспределения
+	void reallocate(unsigned short free_cells, int n) // С„СѓРЅРєС†РёСЏ РїРµСЂРµСЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ
 	{
 		unsigned short for_each = free_cells / StackCount;
 		unsigned short extra = free_cells - for_each * StackCount;
